@@ -20,6 +20,7 @@ const Navbar = () => {
     } else {
       setUser(null);
     }
+    setMenuOpen(false); // close menu on route change
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -31,9 +32,12 @@ const Navbar = () => {
   const handleGoToChat = async () => {
     if (!user) return;
     try {
-      const res = await axios.get("https://muhurtham-backend.onrender.com/api/chat/mutual/list", {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const res = await axios.get(
+        "https://muhurtham-backend.onrender.com/api/chat/mutual/list",
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
 
       if (res.data.length > 0) {
         const firstUser = res.data[0];
@@ -49,24 +53,38 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-deepPlum/95 text-white border-b border-warmPeach/35 px-6 py-4 flex justify-between items-center shadow-md">
-      <Link to="/home" className="text-2xl font-bold">Muhurtham ❤️</Link>
+      <Link to="/home" className="text-2xl font-bold">
+        Muhurtham ❤️
+      </Link>
 
       {/* Desktop Links */}
-      <div className="gap-4 items-center max-sm:hidden flex">
+      <div className="hidden sm:flex gap-4 items-center">
         {!user ? (
           <>
-            <Link to="/register" className="hover:text-warmPeach">Register</Link>
-            <Link to="/" className="hover:text-warmPeach">Login</Link>
+            <Link to="/register" className="hover:text-warmPeach">
+              Register
+            </Link>
+            <Link to="/" className="hover:text-warmPeach">
+              Login
+            </Link>
           </>
         ) : (
           <>
             {user.role === "admin" ? (
-              <Link to="/admin" className="hover:text-warmPeach">Admin Panel</Link>
+              <Link to="/admin" className="hover:text-warmPeach">
+                Admin Panel
+              </Link>
             ) : (
               <>
-                <Link to="/home" className="hover:text-warmPeach">Home</Link>
-                <Link to="/matches" className="hover:text-warmPeach">Matches</Link>
-                <Link to="/interests" className="hover:text-warmPeach">Interests</Link>
+                <Link to="/home" className="hover:text-warmPeach">
+                  Home
+                </Link>
+                <Link to="/matches" className="hover:text-warmPeach">
+                  Matches
+                </Link>
+                <Link to="/interests" className="hover:text-warmPeach">
+                  Interests
+                </Link>
                 <button
                   onClick={handleGoToChat}
                   title="Chat"
@@ -93,48 +111,75 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Mobile Burger */}
-      <div className="sm:hidden relative">
+      {/* Mobile Burger Icon */}
+      <div className="sm:hidden z-50">
         <button onClick={() => setMenuOpen(!menuOpen)} className="text-2xl">
           {menuOpen ? <FaTimes /> : <FaBars />}
         </button>
+      </div>
 
-        {menuOpen && (
-          <div className="absolute h-screen right-0 top-10 bg-white text-deepPlum rounded shadow-lg p-4 w-48 flex flex-col gap-3 z-50">
-            {!user ? (
-              <>
-                <Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link>
-                <Link to="/" onClick={() => setMenuOpen(false)}>Login</Link>
-              </>
+      {/* Mobile Sidebar Menu */}
+      <div
+        className={`fixed top-0 right-0 h-screen w-64 bg-deepPlum text-white transform transition-transform duration-300 z-40 p-10 flex flex-col gap-8 ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        {!user ? (
+          <>
+            <Link to="/register" onClick={() => setMenuOpen(false)}>
+              Register
+            </Link>
+            <Link to="/" onClick={() => setMenuOpen(false)}>
+              Login
+            </Link>
+          </>
+        ) : (
+          <>
+            {user.role === "admin" ? (
+              <Link to="/admin" onClick={() => setMenuOpen(false)}>
+                Admin Panel
+              </Link>
             ) : (
               <>
-                {user.role === "admin" ? (
-                  <Link to="/admin" onClick={() => setMenuOpen(false)}>Admin Panel</Link>
-                ) : (
-                  <>
-                    <Link to="/home" onClick={() => setMenuOpen(false)}>Home</Link>
-                    <Link to="/matches" onClick={() => setMenuOpen(false)}>Matches</Link>
-                    <Link to="/interests" onClick={() => setMenuOpen(false)}>Interests</Link>
-                    <button
-                      onClick={() => {
-                        handleGoToChat();
-                        setMenuOpen(false);
-                      }}
-                      className="text-left"
-                    >
-                      Chat
-                    </button>
-                  </>
-                )}
-                <button onClick={() => { navigate("/profile"); setMenuOpen(false); }}>
-                  Profile
-                </button>
-                <button onClick={() => { handleLogout(); setMenuOpen(false); }}>
-                  Logout
+                <Link to="/home" onClick={() => setMenuOpen(false)}>
+                  Home
+                </Link>
+                <Link to="/matches" onClick={() => setMenuOpen(false)}>
+                  Matches
+                </Link>
+                <Link to="/interests" onClick={() => setMenuOpen(false)}>
+                  Interests
+                </Link>
+                <button
+                  onClick={() => {
+                    handleGoToChat();
+                    setMenuOpen(false);
+                  }}
+                  className="text-left"
+                >
+                  Chat
                 </button>
               </>
             )}
-          </div>
+            <button
+              onClick={() => {
+                navigate("/profile");
+                setMenuOpen(false);
+              }}
+              className="border border-warmPeach py-2 rounded-md hover:bg-warmPeach hover:text-black/90 hover:rounded-md"
+            >
+              Profile
+            </button>
+            <button
+              onClick={() => {
+                handleLogout();
+                setMenuOpen(false);
+              }}
+              className="border border-warmPeach py-2 rounded-md hover:bg-warmPeach hover:text-black/90 hover:rounded-md"
+            >
+              Logout
+            </button>
+          </>
         )}
       </div>
     </nav>
