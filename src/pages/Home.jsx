@@ -54,7 +54,7 @@ const Home = () => {
           Sign up now and let us help you find a partner who shares your values, culture, and vision for life.
         </p>
         <div className="mt-6">
-          <PrimaryButton label="Create Your Profile" onClick={() => navigate("/register")} />
+          <PrimaryButton label="Create Your Profile" onClick={() => navigate("/matches")} />
         </div>
       </section>
     </div>
