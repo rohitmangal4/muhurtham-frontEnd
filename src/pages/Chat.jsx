@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { io } from "socket.io-client";
 import ChatSidebar from "../components/ChatSidebar";
-import ChatHeader from "../components/chatHeader";
+import ChatHeader from "../components/ChatHeader";
 import ChatBody from "../components/ChatBody";
 import ChatInput from "../components/ChatInput";
 
