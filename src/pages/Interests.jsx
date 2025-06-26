@@ -16,9 +16,12 @@ const Interests = () => {
         rejected: "/api/interest/rejected",
       }[tab];
 
-      const res = await axios.get(`https://muhurtham-backend.onrender.com${endpoint}`, {
-        headers: { Authorization: `Bearer ${user?.token}` },
-      });
+      const res = await axios.get(
+        `https://muhurtham-backend.onrender.com${endpoint}`,
+        {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        }
+      );
 
       setData(res.data);
     } catch (err) {
@@ -84,15 +87,14 @@ const Interests = () => {
       </div>
 
       {/* Interest List */}
-      <div className="w-screen grid max-[440px]:grid-cols-1 max-md:grid-cols-2 max-[1350px]:grid-cols-3 min-lg:grid-cols-4 gap-6">
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {data.length === 0 ? (
-          <p className="text-center col-span-3 text-mutedBlack">
+          <p className="text-center col-span-full text-mutedBlack">
             No records found.
           </p>
         ) : (
           data.map((item) => {
-            const profile =
-              tab === "received" ? item.sender : item; // sender only for received tab
+            const profile = tab === "received" ? item.sender : item;
             const interestId = item._id;
 
             return (
