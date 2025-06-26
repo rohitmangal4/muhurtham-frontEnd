@@ -15,10 +15,10 @@ const Footer = () => {
         <div>
           <h3 className="font-semibold text-warmPeach mb-2">Quick Links</h3>
           <ul className="space-y-1 text-sm">
-            <li><Link to="/" className="hover:text-warmPeach">Home</Link></li>
-            <li><Link to="/register" className="hover:text-warmPeach">Register</Link></li>
-            <li><Link to="/" className="hover:text-warmPeach">Login</Link></li>
+            <li><Link to="/home" className="hover:text-warmPeach">Home</Link></li>
             <li><Link to="/matches" className="hover:text-warmPeach">Matches</Link></li>
+            <li><Link to="/interest" className="hover:text-warmPeach">Interest</Link></li>
+            <li><Link to="/profile" className="hover:text-warmPeach">Profile</Link></li>
           </ul>
         </div>
 
@@ -27,7 +27,7 @@ const Footer = () => {
           <ul className="space-y-1 text-sm">
             <li>Email: support@muhurtham.com</li>
             <li>Phone: +91 98765 43210</li>
-            <li>Mon - Sat, 10AM - 6PM</li>
+            <li>Customer Care: 24/7</li>
           </ul>
         </div>
       </div>
