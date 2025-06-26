@@ -84,7 +84,7 @@ const Interests = () => {
       </div>
 
       {/* Interest List */}
-      <div className="w-screen grid max-[440px]:grid-cols-1 max-md:grid-cols-2 max-[1350px]:grid-cols-3 min-[1350px]:grid-cols-4 gap-6">
+      <div className="w-screen grid max-[440px]:grid-cols-1 max-md:grid-cols-2 max-[1350px]:grid-cols-3 min-lg:grid-cols-4 gap-6">
         {data.length === 0 ? (
           <p className="text-center col-span-3 text-mutedBlack">
             No records found.
