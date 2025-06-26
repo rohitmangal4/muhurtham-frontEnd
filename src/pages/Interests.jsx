@@ -16,7 +16,7 @@ const Interests = () => {
         rejected: "/api/interest/rejected",
       }[tab];
 
-      const res = await axios.get(`http://localhost:7000${endpoint}`, {
+      const res = await axios.get(`https://muhurtham-backend.onrender.com${endpoint}`, {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
 
@@ -29,7 +29,7 @@ const Interests = () => {
   const handleAccept = async (interestId) => {
     try {
       await axios.put(
-        `http://localhost:7000/api/interest/respond/${interestId}`,
+        `https://muhurtham-backend.onrender.com/api/interest/respond/${interestId}`,
         { status: "accepted" },
         {
           headers: { Authorization: `Bearer ${user.token}` },
@@ -44,7 +44,7 @@ const Interests = () => {
   const handleReject = async (interestId) => {
     try {
       await axios.put(
-        `http://localhost:7000/api/interest/respond/${interestId}`,
+        `https://muhurtham-backend.onrender.com/api/interest/respond/${interestId}`,
         { status: "rejected" },
         {
           headers: { Authorization: `Bearer ${user.token}` },

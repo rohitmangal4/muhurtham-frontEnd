@@ -11,7 +11,7 @@ const Matches = () => {
 
   const fetchSuggestions = async () => {
     try {
-      const res = await axios.get(`http://localhost:7000/api/user/suggestions`, {
+      const res = await axios.get(`https://muhurtham-backend.onrender.com/api/user/suggestions`, {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       setProfiles(res.data);
@@ -25,7 +25,7 @@ const Matches = () => {
   const sendInterest = async (receiverId) => {
   try {
     await axios.post(
-      `http://localhost:7000/api/interest/send/${receiverId}`,
+      `https://muhurtham-backend.onrender.com/api/interest/send/${receiverId}`,
       {}, // No body needed
       {
         headers: { Authorization: `Bearer ${user?.token}` },

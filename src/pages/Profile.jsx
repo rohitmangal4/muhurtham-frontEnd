@@ -16,7 +16,7 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:7000/api/user/me/${userId}`,
+        `https://muhurtham-backend.onrender.com/api/user/me/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -62,7 +62,7 @@ const Profile = () => {
     setLoading(true);
     try {
       const res = await axios
-        .put(`http://localhost:7000/api/user/update/${userId}`, profile, {
+        .put(`https://muhurtham-backend.onrender.com/api/user/update/${userId}`, profile, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },

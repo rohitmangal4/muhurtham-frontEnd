@@ -38,7 +38,7 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:7000/api/auth/register", formData);
+      const res = await axios.post("https://muhurtham-backend.onrender.com/api/auth/register", formData);
       localStorage.setItem("muhurthamUser", JSON.stringify(res.data));
       toast.success("Registered Successfully!");
       setTimeout(() => navigate("/home"), 1000);

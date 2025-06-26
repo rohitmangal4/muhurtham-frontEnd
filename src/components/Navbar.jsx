@@ -31,7 +31,7 @@ const Navbar = () => {
   const handleGoToChat = async () => {
     if (!user) return;
     try {
-      const res = await axios.get("http://localhost:7000/api/chat/mutual/list", {
+      const res = await axios.get("https://muhurtham-backend.onrender.com/api/chat/mutual/list", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
 

@@ -15,7 +15,7 @@ const ViewProfile = () => {
     const fetchProfile = async () => {
       try {
         await axios
-          .get(`http://localhost:7000/api/user/view/${id}`, {
+          .get(`https://muhurtham-backend.onrender.com/api/user/view/${id}`, {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },

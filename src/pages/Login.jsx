@@ -25,7 +25,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:7000/api/auth/login", formData);
+      const res = await axios.post("https://muhurtham-backend.onrender.com/api/auth/login", formData);
       const userData = res.data;
 
       localStorage.setItem("muhurthamUser", JSON.stringify(userData));

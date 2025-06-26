@@ -7,7 +7,7 @@ import ChatHeader from "../components/chatHeader";
 import ChatBody from "../components/ChatBody";
 import ChatInput from "../components/ChatInput";
 
-const socket = io("http://localhost:7000");
+const socket = io("https://muhurtham-backend.onrender.com");
 
 const ChatPage = () => {
   const { userId } = useParams();
@@ -42,13 +42,13 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchChatsAndUser = async () => {
       try {
-        const res = await axios.get("http://localhost:7000/api/chat/mutual/list", {
+        const res = await axios.get("https://muhurtham-backend.onrender.com/api/chat/mutual/list", {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         setChats(res.data);
 
         if (userId) {
-          const userRes = await axios.get(`http://localhost:7000/api/user/me/${userId}`, {
+          const userRes = await axios.get(`https://muhurtham-backend.onrender.com/api/user/me/${userId}`, {
             headers: { Authorization: `Bearer ${user.token}` },
           });
           setActiveChat(userRes.data);
@@ -64,7 +64,7 @@ const ChatPage = () => {
 
   const loadMessages = async (receiverId) => {
     try {
-      const res = await axios.get(`http://localhost:7000/api/chat/${receiverId}`, {
+      const res = await axios.get(`https://muhurtham-backend.onrender.com/api/chat/${receiverId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setMessages(res.data);
@@ -90,7 +90,7 @@ const ChatPage = () => {
     };
 
     try {
-      await axios.post("http://localhost:7000/api/chat/send", msg, {
+      await axios.post("https://muhurtham-backend.onrender.com/api/chat/send", msg, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       socket.emit("sendMessage", msg);

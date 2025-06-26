@@ -9,7 +9,7 @@ const Admin = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/users");
+      const res = await axios.get("https://muhurtham-backend.onrender.com/api/admin/users");
       setUsers(res.data);
     } catch (err) {
       console.error("User fetch failed", err);
@@ -18,7 +18,7 @@ const Admin = () => {
 
   const fetchInterests = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/interests");
+      const res = await axios.get("https://muhurtham-backend.onrender.com/api/admin/interests");
       setInterests(res.data);
     } catch (err) {
       console.error("Interest fetch failed", err);
@@ -29,7 +29,7 @@ const Admin = () => {
     if (!window.confirm("Are you sure to delete this user?")) return;
 
     try {
-      await axios.delete(`http://localhost:7000/api/admin/user/${id}`);
+      await axios.delete(`https://muhurtham-backend.onrender.com/api/admin/user/${id}`);
       fetchUsers();
     } catch (err) {
       alert("User delete failed");
