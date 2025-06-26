@@ -14,7 +14,7 @@ const Home = () => {
       <HeroSection
         title="Welcome to Muhurtham ❤️"
         subtitle="Find your soulmate within the Tamil community. 100% verified profiles, secure matchmaking, and meaningful connections."
-        ctaLabel="Join Now"
+        ctaLabel="Find Matches"
         onCTAClick={() => navigate("/matches")}
       />
 
@@ -54,7 +54,7 @@ const Home = () => {
           Sign up now and let us help you find a partner who shares your values, culture, and vision for life.
         </p>
         <div className="mt-6">
-          <PrimaryButton label="Create Your Profile" onClick={() => navigate("/matches")} />
+          <PrimaryButton label="Find Your Partner" onClick={() => navigate("/matches")} />
         </div>
       </section>
     </div>
