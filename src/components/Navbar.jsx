@@ -64,6 +64,7 @@ const Navbar = () => {
               <Link to="/admin" className="hover:text-warmPeach">Admin Panel</Link>
             ) : (
               <>
+                <Link to="/home" className="hover:text-warmPeach">Home</Link>
                 <Link to="/matches" className="hover:text-warmPeach">Matches</Link>
                 <Link to="/interests" className="hover:text-warmPeach">Interests</Link>
                 <button
@@ -99,7 +100,7 @@ const Navbar = () => {
         </button>
 
         {menuOpen && (
-          <div className="absolute right-0 top-10 bg-white text-deepPlum rounded shadow-lg p-4 w-48 flex flex-col gap-3 z-50">
+          <div className="absolute h-screen right-0 top-10 bg-white text-deepPlum rounded shadow-lg p-4 w-48 flex flex-col gap-3 z-50">
             {!user ? (
               <>
                 <Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link>
@@ -111,6 +112,7 @@ const Navbar = () => {
                   <Link to="/admin" onClick={() => setMenuOpen(false)}>Admin Panel</Link>
                 ) : (
                   <>
+                    <Link to="/home" onClick={() => setMenuOpen(false)}>Home</Link>
                     <Link to="/matches" onClick={() => setMenuOpen(false)}>Matches</Link>
                     <Link to="/interests" onClick={() => setMenuOpen(false)}>Interests</Link>
                     <button
