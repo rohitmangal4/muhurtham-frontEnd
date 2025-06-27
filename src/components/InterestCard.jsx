@@ -14,7 +14,7 @@ const InterestCard = ({
   return (
     <div className="bg-white border rounded p-4 shadow-sm shadow-deepPlum hover:shadow-md  hover:shadow-deepPlum transition flex flex-row max-[1120px]:flex-col justify-between items-center gap-4">
       <div className="text-center md:text-left">
-        <h3 className="text-xl font-bold text-deepPlum">{profile.fullName}</h3>
+        <h3 className="text-xl font-bold text-deepPlum">{profile?.fullName}</h3>
         <p className="text-mutedBlack text-sm">
           Age: {profile.age} | Community: {profile.caste}
         </p>
