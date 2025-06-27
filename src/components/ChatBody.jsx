@@ -74,7 +74,7 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
                   : "bg-warmPeach text-black rounded-bl-none"
               }`}
             >
-              <p>{msg.content}</p>
+              <p ref={messageEndRef}>{msg.content}</p>
               <p className="text-[10px] text-right mt-1 opacity-70">{timeString}</p>
             </div>
           </div>
