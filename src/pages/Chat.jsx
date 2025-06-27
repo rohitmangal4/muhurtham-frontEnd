@@ -32,7 +32,7 @@ const ChatPage = () => {
 
     socket.on("receiveMessage", (msg) => {
       const isRelevant =
-        activeChat?._id === msg.senderId || activeChat?._id === msg.receiverId;
+        activeChat?._id === msg.senderId && activeChat?._id === msg.receiverId;
 
       if (isRelevant) {
         setMessages((prev) => [...prev, msg]);
