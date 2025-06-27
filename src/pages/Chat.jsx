@@ -1,3 +1,5 @@
+
+
 // import { useEffect, useState, useRef } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import axios from "axios";
@@ -7,7 +9,7 @@
 // import ChatBody from "../components/ChatBody";
 // import ChatInput from "../components/ChatInput";
 
-// // Connect socket outside component to persist
+// // Socket instance — declared outside to persist across renders
 // const socket = io("https://muhurtham-backend.onrender.com", {
 //   autoConnect: false,
 // });
@@ -22,16 +24,13 @@
 //   const [newMsgCountMap, setNewMsgCountMap] = useState({});
 //   const messageEndRef = useRef();
 
-//   // Connect socket once and listen for incoming messages
+//   // ⚡ Connect socket only once
 //   useEffect(() => {
 //     if (!user?._id) return;
 
 //     socket.connect();
-//     socket.emit("join", user._id);
 
-//     socket.on("connect", () => {
-//       console.log("Socket connected:", socket.id);
-//     });
+//     socket.emit("join", user._id);
 
 //     socket.on("receiveMessage", (msg) => {
 //       const isRelevant =
@@ -39,10 +38,10 @@
 
 //       if (isRelevant) {
 //         setMessages((prev) => [...prev, msg]);
+//         scrollToBottom();
 //       }
 
-//       // Increase unread if not active
-//       if (!activeChat || activeChat._id !== msg.senderId) {
+//       if (!isRelevant) {
 //         setNewMsgCountMap((prev) => ({
 //           ...prev,
 //           [msg.senderId]: (prev[msg.senderId] || 0) + 1,
@@ -53,15 +52,23 @@
 //     return () => {
 //       socket.off("receiveMessage");
 //     };
-//   }, [user._id]);
+//   }, [user._id, activeChat]);
 
-//   // Load chat list and messages on first render or userId param change
+//   // 🔁 Scroll when new messages appear
+//   const scrollToBottom = () => {
+//     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+//   };
+
+//   // 📥 Load chat list + optionally active chat
 //   useEffect(() => {
 //     const fetchChatsAndUser = async () => {
 //       try {
-//         const res = await axios.get("https://muhurtham-backend.onrender.com/api/chat/mutual/list", {
-//           headers: { Authorization: `Bearer ${user.token}` },
-//         });
+//         const res = await axios.get(
+//           "https://muhurtham-backend.onrender.com/api/chat/mutual/list",
+//           {
+//             headers: { Authorization: `Bearer ${user.token}` },
+//           }
+//         );
 //         setChats(res.data);
 
 //         if (userId) {
@@ -82,6 +89,7 @@
 //     fetchChatsAndUser();
 //   }, [user.token, userId]);
 
+//   // 🧾 Load all messages between user and active chat
 //   const loadMessages = async (receiverId) => {
 //     try {
 //       const res = await axios.get(
@@ -91,6 +99,7 @@
 //         }
 //       );
 //       setMessages(res.data);
+//       scrollToBottom();
 //     } catch (err) {
 //       console.error("Message fetch failed", err);
 //     }
@@ -103,6 +112,7 @@
 //     }));
 //   };
 
+//   // 📨 Handle sending new message
 //   const handleSend = async (msgText) => {
 //     if (!msgText || !activeChat) return;
 
@@ -110,23 +120,25 @@
 //       senderId: user._id,
 //       receiverId: activeChat._id,
 //       content: msgText,
+//       createdAt: new Date().toISOString(), // ensure timestamp
 //     };
 
 //     try {
-//       await axios.post("https://muhurtham-backend.onrender.com/api/chat/send", msg, {
-//         headers: { Authorization: `Bearer ${user.token}` },
-//       });
+//       await axios.post(
+//         "https://muhurtham-backend.onrender.com/api/chat/send",
+//         msg,
+//         {
+//           headers: { Authorization: `Bearer ${user.token}` },
+//         }
+//       );
 
 //       socket.emit("sendMessage", msg);
 //       setMessages((prev) => [...prev, msg]);
+//       scrollToBottom();
 //     } catch (err) {
 //       console.error("Send message failed", err);
 //     }
 //   };
-
-//   useEffect(() => {
-//     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-//   }, [messages]);
 
 //   return (
 //     <div className="min-h-screen grid md:grid-cols-4 pt-16 px-4 md:px-6 gap-4 bg-linen">
@@ -144,7 +156,7 @@
 //         clearNewMsgCount={clearNewMsgCount}
 //       />
 
-//       <div className="md:col-span-3 border rounded-lg p-4 mb-16 bg-white flex flex-col">
+//       <div className="md:col-span-3 border rounded-lg p-4 mb-16 bg-white flex flex-col h-[75vh]">
 //         {!activeChat ? (
 //           <p className="text-center text-mutedBlack mt-10">
 //             Select a user to start chat
@@ -152,13 +164,15 @@
 //         ) : (
 //           <>
 //             <ChatHeader name={activeChat?.fullName} />
-//             <ChatBody
-//               messages={messages}
-//               currentUserId={user}
-//               activeChat={activeChat}
-//               messageEndRef={messageEndRef}
-//             />
-//             <ChatInput onSend={handleSend} />
+//             <div className="flex-1 flex flex-col overflow-hidden">
+//               <ChatBody
+//                 messages={messages}
+//                 currentUserId={user}
+//                 activeChat={activeChat}
+//                 messageEndRef={messageEndRef}
+//               />
+//               <ChatInput onSend={handleSend} />
+//             </div>
 //           </>
 //         )}
 //       </div>
@@ -167,6 +181,9 @@
 // };
 
 // export default ChatPage;
+
+
+// src/pages/ChatPage.jsx
 
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -177,7 +194,7 @@ import ChatHeader from "../components/ChatHeader";
 import ChatBody from "../components/ChatBody";
 import ChatInput from "../components/ChatInput";
 
-// Socket instance — declared outside to persist across renders
+// ✅ Socket instance (persistent)
 const socket = io("https://muhurtham-backend.onrender.com", {
   autoConnect: false,
 });
@@ -191,25 +208,24 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [newMsgCountMap, setNewMsgCountMap] = useState({});
   const messageEndRef = useRef();
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
-  // ⚡ Connect socket only once
+  // ✅ Connect to Socket.IO once
   useEffect(() => {
     if (!user?._id) return;
 
     socket.connect();
-
     socket.emit("join", user._id);
 
     socket.on("receiveMessage", (msg) => {
       const isRelevant =
-        activeChat?._id === msg.senderId || activeChat?._id === msg.receiverId;
+        String(activeChat?._id) === String(msg.senderId) ||
+        String(activeChat?._id) === String(msg.receiverId);
 
       if (isRelevant) {
         setMessages((prev) => [...prev, msg]);
         scrollToBottom();
-      }
-
-      if (!isRelevant) {
+      } else {
         setNewMsgCountMap((prev) => ({
           ...prev,
           [msg.senderId]: (prev[msg.senderId] || 0) + 1,
@@ -219,15 +235,15 @@ const ChatPage = () => {
 
     return () => {
       socket.off("receiveMessage");
+      socket.disconnect();
     };
   }, [user._id, activeChat]);
 
-  // 🔁 Scroll when new messages appear
   const scrollToBottom = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // 📥 Load chat list + optionally active chat
+  // 📥 Load mutual chat users and set selected chat
   useEffect(() => {
     const fetchChatsAndUser = async () => {
       try {
@@ -257,9 +273,10 @@ const ChatPage = () => {
     fetchChatsAndUser();
   }, [user.token, userId]);
 
-  // 🧾 Load all messages between user and active chat
+  // 🧾 Load message history
   const loadMessages = async (receiverId) => {
     try {
+      setLoadingMessages(true);
       const res = await axios.get(
         `https://muhurtham-backend.onrender.com/api/chat/${receiverId}`,
         {
@@ -267,6 +284,7 @@ const ChatPage = () => {
         }
       );
       setMessages(res.data);
+      setLoadingMessages(false);
       scrollToBottom();
     } catch (err) {
       console.error("Message fetch failed", err);
@@ -280,7 +298,7 @@ const ChatPage = () => {
     }));
   };
 
-  // 📨 Handle sending new message
+  // 📨 Send message
   const handleSend = async (msgText) => {
     if (!msgText || !activeChat) return;
 
@@ -288,7 +306,7 @@ const ChatPage = () => {
       senderId: user._id,
       receiverId: activeChat._id,
       content: msgText,
-      createdAt: new Date().toISOString(), // ensure timestamp
+      createdAt: new Date().toISOString(),
     };
 
     try {
@@ -333,12 +351,18 @@ const ChatPage = () => {
           <>
             <ChatHeader name={activeChat?.fullName} />
             <div className="flex-1 flex flex-col overflow-hidden">
-              <ChatBody
-                messages={messages}
-                currentUserId={user}
-                activeChat={activeChat}
-                messageEndRef={messageEndRef}
-              />
+              {loadingMessages ? (
+                <div className="text-center text-mutedBlack py-8">
+                  Loading messages...
+                </div>
+              ) : (
+                <ChatBody
+                  messages={messages}
+                  currentUserId={user._id}
+                  activeChat={activeChat}
+                  messageEndRef={messageEndRef}
+                />
+              )}
               <ChatInput onSend={handleSend} />
             </div>
           </>
