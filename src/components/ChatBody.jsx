@@ -107,8 +107,8 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
     <div className="flex-1 overflow-y-auto px-4 py-2 scroll-smooth">
       {messages.map((msg, idx) => {
         const isSender =
-          msg.senderId === currentUserId ||
-          msg.senderId?._id === currentUserId;
+          msg.senderId === currentUserId._id ||
+          msg.senderId?._id === currentUserId._id;
 
         let timeString = "Invalid time";
         try {
