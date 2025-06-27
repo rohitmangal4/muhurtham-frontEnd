@@ -98,20 +98,11 @@
 import React, { useEffect } from "react";
 
 const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
-  // useEffect(() => {
-  //   messageEndRef.current?.scrollIntoView({
-  //     behavior: "smooth",
-  //     block: "nearest",
-  //   });
-  // }, [messages]);
-
   useEffect(() => {
-    setTimeout(() => {
-      messageEndRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-    }, 100);
+    messageEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
   }, [messages]);
 
   return (
