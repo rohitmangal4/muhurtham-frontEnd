@@ -461,7 +461,7 @@ const ChatPage = () => {
         clearNewMsgCount={clearNewMsgCount}
       />
 
-      <div className="md:col-span-3 border rounded-lg bg-white flex flex-col h-[80vh]">
+      <div className="md:col-span-3 border rounded-lg p-4 mb-16 bg-white flex flex-col h-[75vh]">
         {!activeChat ? (
           <p className="text-center text-mutedBlack mt-10">
             Select a user to start chat

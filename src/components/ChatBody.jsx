@@ -37,16 +37,20 @@
 
 // export default ChatBody;
 
-
 // src/components/ChatBody.jsx
 import React from "react";
 
 const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div className="flex-1 overflow-y-auto px-4 py-2 scroll-smooth">
       {messages.map((msg, idx) => {
         const isSender =
-          msg.senderId === currentUserId._id || msg.senderId?._id === currentUserId._id;
+          msg.senderId === currentUserId._id ||
+          msg.senderId?._id === currentUserId._id;
 
         // Safe timestamp parse fallback
         let timeString = "Invalid time";
@@ -65,7 +69,9 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
         return (
           <div
             key={idx}
-            className={`mb-2 flex ${isSender ? "justify-end" : "justify-start"}`}
+            className={`mb-2 flex ${
+              isSender ? "justify-end" : "justify-start"
+            }`}
           >
             <div
               className={`px-4 py-2 rounded max-w-xs shadow-md text-sm ${
@@ -75,7 +81,9 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
               }`}
             >
               <p ref={messageEndRef}>{msg.content}</p>
-              <p className="text-[10px] text-right mt-1 opacity-70">{timeString}</p>
+              <p className="text-[10px] text-right mt-1 opacity-70">
+                {timeString}
+              </p>
             </div>
           </div>
         );
