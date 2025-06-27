@@ -24,25 +24,32 @@ const ChatPage = () => {
 
   // ⚡ Connect socket only once
   useEffect(() => {
+    if (!user?._id) return;
+
+    socket.connect();
+
     socket.emit("join", user._id);
 
     socket.on("receiveMessage", (msg) => {
-      const senderStr = String(msg.senderId);
-      const activeStr = String(activeChat?._id);
+      const isRelevant =
+        activeChat?._id === msg.senderId || activeChat?._id === msg.receiverId;
 
-      // 🔁 Only add to current chat window if it's open
-      if (activeChat && senderStr === activeStr) {
+      if (isRelevant) {
         setMessages((prev) => [...prev, msg]);
-      } else {
-        // 🔔 Otherwise, update unread badge in sidebar
+        scrollToBottom();
+      }
+
+      if (!isRelevant) {
         setNewMsgCountMap((prev) => ({
           ...prev,
-          [senderStr]: (prev[senderStr] || 0) + 1,
+          [msg.senderId]: (prev[msg.senderId] || 0) + 1,
         }));
       }
     });
 
-    return () => socket.disconnect();
+    return () => {
+      socket.off("receiveMessage");
+    };
   }, [user._id, activeChat]);
 
   // 🔁 Scroll when new messages appear
