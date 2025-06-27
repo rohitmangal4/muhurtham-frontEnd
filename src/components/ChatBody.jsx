@@ -38,11 +38,69 @@
 // export default ChatBody;
 
 // src/components/ChatBody.jsx
+// import React, { useEffect } from "react";
+
+// const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
+//   useEffect(() => {
+//     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+//   }, [messages]);
+
+//   return (
+//     <div className="flex-1 overflow-y-auto px-4 py-2 scroll-smooth">
+//       {messages.map((msg, idx) => {
+//         const isSender =
+//           msg.senderId === currentUserId._id ||
+//           msg.senderId?._id === currentUserId._id;
+
+//         // Safe timestamp parse fallback
+//         let timeString = "Invalid time";
+//         try {
+//           const date = new Date(msg.createdAt || msg.timestamp);
+//           if (!isNaN(date.getTime())) {
+//             timeString = date.toLocaleTimeString([], {
+//               hour: "2-digit",
+//               minute: "2-digit",
+//             });
+//           }
+//         } catch (err) {
+//           console.error("Time parse error", err);
+//         }
+
+//         return (
+//           <div
+//             key={idx}
+//             className={`mb-2 flex ${
+//               isSender ? "justify-end" : "justify-start"
+//             }`}
+//           >
+//             <div
+//               className={`px-4 py-2 rounded max-w-xs shadow-md text-sm ${
+//                 isSender
+//                   ? "bg-deepPlum text-white rounded-br-none"
+//                   : "bg-warmPeach text-black rounded-bl-none"
+//               }`}
+//             >
+//               <p ref={messageEndRef}>{msg.content}</p>
+//               <p className="text-[10px] text-right mt-1 opacity-70">
+//                 {timeString}
+//               </p>
+//             </div>
+//           </div>
+//         );
+//       })}
+//       <div ref={messageEndRef} />
+//     </div>
+//   );
+// };
+
+// export default ChatBody;
+
+
 import React, { useEffect } from "react";
 
 const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [messages]);
 
   return (
@@ -52,7 +110,6 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
           msg.senderId === currentUserId._id ||
           msg.senderId?._id === currentUserId._id;
 
-        // Safe timestamp parse fallback
         let timeString = "Invalid time";
         try {
           const date = new Date(msg.createdAt || msg.timestamp);
@@ -62,16 +119,15 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
               minute: "2-digit",
             });
           }
-        } catch (err) {
-          console.error("Time parse error", err);
-        }
+        } catch {}
+
+        const isLast = idx === messages.length - 1;
 
         return (
           <div
             key={idx}
-            className={`mb-2 flex ${
-              isSender ? "justify-end" : "justify-start"
-            }`}
+            ref={isLast ? messageEndRef : null} // ✅ Only scroll to last message
+            className={`mb-2 flex ${isSender ? "justify-end" : "justify-start"}`}
           >
             <div
               className={`px-4 py-2 rounded max-w-xs shadow-md text-sm ${
@@ -80,15 +136,12 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
                   : "bg-warmPeach text-black rounded-bl-none"
               }`}
             >
-              <p ref={messageEndRef}>{msg.content}</p>
-              <p className="text-[10px] text-right mt-1 opacity-70">
-                {timeString}
-              </p>
+              <p>{msg.content}</p>
+              <p className="text-[10px] text-right mt-1 opacity-70">{timeString}</p>
             </div>
           </div>
         );
       })}
-      <div ref={messageEndRef} />
     </div>
   );
 };
