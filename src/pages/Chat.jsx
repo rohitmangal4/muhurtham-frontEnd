@@ -375,9 +375,12 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchChatsAndUser = async () => {
       try {
-        const res = await axios.get("https://muhurtham-backend.onrender.com/api/chat/mutual/list", {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
+        const res = await axios.get(
+          "https://muhurtham-backend.onrender.com/api/chat/mutual/list",
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
         setChats(res.data);
 
         if (userId) {
@@ -433,9 +436,13 @@ const ChatPage = () => {
     };
 
     try {
-      await axios.post("https://muhurtham-backend.onrender.com/api/chat/send", msg, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      await axios.post(
+        "https://muhurtham-backend.onrender.com/api/chat/send",
+        msg,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
 
       socket.emit("sendMessage", msg);
       setMessages((prev) => [...prev, msg]);
@@ -469,13 +476,15 @@ const ChatPage = () => {
         ) : (
           <>
             <ChatHeader name={activeChat?.fullName} />
-            <ChatBody
-              messages={messages}
-              currentUserId={user}
-              activeChat={activeChat}
-              messageEndRef={messageEndRef}
-            />
-            <ChatInput onSend={handleSend} />
+            <div className="flex-1 flex flex-col overflow-hidden">
+              <ChatBody
+                messages={messages}
+                currentUserId={user}
+                activeChat={activeChat}
+                messageEndRef={messageEndRef}
+              />
+              <ChatInput onSend={handleSend} />
+            </div>
           </>
         )}
       </div>
