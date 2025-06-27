@@ -38,7 +38,7 @@
 // export default ChatBody;
 
 // src/components/ChatBody.jsx
-import React from "react";
+import React, { useEffect } from "react";
 
 const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
   useEffect(() => {
