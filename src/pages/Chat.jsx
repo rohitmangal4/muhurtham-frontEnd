@@ -35,7 +35,7 @@ const ChatPage = () => {
       //   activeChat?._id === msg.senderId && activeChat?._id === msg.receiverId;
 
       const isRelevant =
-        (activeChat?._id === msg.senderId && user._id === msg.receiverId) ||
+        (activeChat?._id === msg.senderId && user._id === msg.receiverId) &&
         (activeChat?._id === msg.receiverId && user._id === msg.senderId);
 
       if (isRelevant) {
