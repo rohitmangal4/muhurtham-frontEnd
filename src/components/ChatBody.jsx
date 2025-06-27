@@ -95,20 +95,35 @@
 
 // export default ChatBody;
 
-
 import React, { useEffect } from "react";
 
 const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
+  // useEffect(() => {
+  //   messageEndRef.current?.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "nearest",
+  //   });
+  // }, [messages]);
+
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    setTimeout(() => {
+      messageEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }, 100);
   }, [messages]);
 
   return (
     <div className="flex-1 overflow-y-auto px-4 py-2 scroll-smooth">
       {messages.map((msg, idx) => {
-        const isSender =
-          msg.senderId === currentUserId._id ||
-          msg.senderId?._id === currentUserId._id;
+        // const isSender =
+        //   msg.senderId === currentUserId._id ||
+        //   msg.senderId?._id === currentUserId._id;
+
+        const senderId =
+          typeof msg.senderId === "object" ? msg.senderId._id : msg.senderId;
+        const isSender = senderId === currentUserId._id;
 
         let timeString = "Invalid time";
         try {
@@ -127,7 +142,9 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
           <div
             key={idx}
             ref={isLast ? messageEndRef : null} // ✅ Only scroll to last message
-            className={`mb-2 flex ${isSender ? "justify-end" : "justify-start"}`}
+            className={`mb-2 flex ${
+              isSender ? "justify-end" : "justify-start"
+            }`}
           >
             <div
               className={`px-4 py-2 rounded max-w-xs shadow-md text-sm ${
@@ -137,7 +154,9 @@ const ChatBody = ({ messages, currentUserId, messageEndRef }) => {
               }`}
             >
               <p>{msg.content}</p>
-              <p className="text-[10px] text-right mt-1 opacity-70">{timeString}</p>
+              <p className="text-[10px] text-right mt-1 opacity-70">
+                {timeString}
+              </p>
             </div>
           </div>
         );
